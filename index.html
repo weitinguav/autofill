@@ -98,9 +98,11 @@
   <p id="saveStatus" style="margin-top:8px;font-size:13px"></p>
 
   <section class="bookmarklet-box">
-    <h3>加入「自動填入」書籤（Safari）</h3>
-    <p>1. 先按上方<strong>儲存到此裝置</strong>，再點下方<strong>複製書籤網址</strong>（書籤內已含台北+高雄資料，<strong>不需開電腦</strong>也能在表單頁填入）。<br>2. Safari → 書籤 → 編輯 → 新增書籤 → 名稱填「自動填入」，網址<strong>貼上</strong>後儲存。<br>3. 到<strong>台北或高雄表單</strong>（第幾頁就開第幾頁），點書籤「自動填入」。</p>
-    <p style="font-size:12px;color:#666">若 Safari 提示書籤過長，請刪減備註欄位後再複製，或改用電腦擴充。</p>
+    <h3>加入「自動填入」書籤（Safari 或 Chrome）</h3>
+    <p>1. 先按上方<strong>儲存到此裝置</strong>，再點下方<strong>複製書籤網址</strong>（書籤內已含資料）。<br>2. 把書籤存進<strong>你之後要開表單的那個瀏覽器</strong>（下面擇一）。<br>3. 用<strong>同一個瀏覽器</strong>開台北／高雄表單（第幾頁就開第幾頁），點書籤「自動填入」。</p>
+    <p style="font-size:13px;line-height:1.55;margin:8px 0 0"><strong>Safari：</strong>書籤圖示 → 編輯 → 新增書籤 → 名稱「自動填入」→ 網址<strong>長按貼上</strong> → 儲存。</p>
+    <p style="font-size:13px;line-height:1.55;margin:6px 0 0"><strong>Chrome（iPhone App）：</strong>右下角<strong>⋯</strong> → <strong>書籤</strong> → 畫面上找<strong>新增／+</strong>或先進「行動書籤」→ 新增時名稱填「自動填入」，網址<strong>貼上</strong>（介面依版本略有不同；若找不到新增，可先隨便書籤一頁，在書籤列表裡對該書籤<strong>編輯</strong>，把網址改成貼上的內容）。填表時請用<strong>Chrome 開 Google 表單</strong>再點書籤，不要用 Safari 存的書籤去開 Chrome 分頁。</p>
+    <p style="font-size:12px;color:#666;margin-top:8px">iPhone 上的 Chrome 與 Safari 一樣都是 Apple 提供的網頁核心，書籤小程式通常兩邊都能用。若瀏覽器不讓你在網址列直接貼上 <code>javascript:</code> 開頭的網址，屬正常，請務必用「書籤」方式執行。若提示書籤過長，請刪減選填欄後再複製。</p>
     <button class="btn secondary" id="copyBtn">複製書籤網址（內含資料）</button>
     <p id="copyStatus" style="margin-top:8px;font-size:13px"></p>
   </section>
@@ -223,7 +225,7 @@
         var st=document.getElementById('copyStatus');
         var n=url.length;
         var warn=n>8000?'（長度 '+n+'，若 Safari 無法存書籤請刪減備註欄後再複製）':'';
-        function done(){st.textContent='已複製！請到 Safari 新增書籤並貼上網址'+warn;st.className='ok';}
+        function done(){st.textContent='已複製！請到 Safari 或 Chrome 新增書籤並貼上網址（填表時用同一瀏覽器）'+warn;st.className='ok';}
         if(navigator.clipboard&&navigator.clipboard.writeText){
           navigator.clipboard.writeText(url).then(done);
         }else{
