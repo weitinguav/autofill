@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>手機自動填入 — 設定</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:15px;padding:16px;background:#f5f5f7;color:#1d1d1f}
+    h1{font-size:20px;margin:0 0 8px}
+    .hint{font-size:13px;color:#666;margin:0 0 16px;line-height:1.4}
+    section{background:#fff;border-radius:12px;padding:16px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+    section h2{font-size:16px;margin:0 0 12px}
+    label{display:block;margin-bottom:12px}
+    label span{display:block;margin-bottom:4px;font-weight:500;color:#333}
+    input,select{width:100%;padding:10px 12px;border:1px solid #d2d2d7;border-radius:8px;font-size:15px}
+    .row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+    .row input[type=checkbox]{width:auto}
+    .btn{display:block;width:100%;padding:14px;border:none;border-radius:10px;font-size:16px;font-weight:600;cursor:pointer;text-align:center;margin-top:8px}
+    .btn.primary{background:#007aff;color:#fff}
+    .btn.secondary{background:#e5e5ea;color:#1d1d1f}
+    .bookmarklet-box{margin:16px 0;padding:12px;background:#fff3cd;border-radius:8px;border:1px solid #ffc107}
+    .bookmarklet-box h3{font-size:14px;margin:0 0 8px}
+    .bookmarklet-box p{font-size:13px;margin:0 0 8px;line-height:1.5}
+    .bookmarklet-box a{word-break:break-all;font-size:12px;color:#007aff}
+    #copyBtn{margin-top:8px}
+    .ok{color:#34c759}
+    .optional{font-size:12px;color:#888;font-weight:400}
+    .open-hint-box{background:#e8f4ff;border:1px solid #b8d4f0;border-radius:12px;padding:14px 16px;margin-bottom:16px}
+    .open-hint-box h2{font-size:15px;margin:0 0 8px;color:#1a4d80}
+    .open-hint-box ol{margin:0;padding-left:1.25em;line-height:1.55;font-size:13px;color:#333}
+    .open-hint-box li{margin-bottom:8px}
+    .open-hint-box code{font-size:12px;background:#fff;padding:1px 6px;border-radius:4px}
+    .open-hint-box .urgent{background:#fff8e6;border:1px solid #e6c200;border-radius:8px;padding:10px 12px;margin-top:12px;font-size:13px;line-height:1.5;color:#333}
+    .open-hint-box .urgent strong{color:#8a6d00}
+    kbd{font-family:inherit;font-size:12px;border:1px solid #c8c8c8;border-radius:4px;padding:1px 6px;background:#f0f0f2}
+  </style>
+</head>
+<body>
+  <h1>遙控無人機表單 — 手機填入</h1>
+  <p class="hint">請先填寫下方資料，按<strong>儲存</strong>後，再按<strong>複製書籤網址</strong>。書籤內已含資料，<strong>在 Google 表單頁執行時不需開電腦、也不需與本頁同一網址</strong>（離開辦公室也能用）。</p>
+
+  <section class="open-hint-box" aria-labelledby="ios-open-title">
+    <h2 id="ios-open-title">手機怎麼開啟本頁？（不在電腦旁時）</h2>
+    <p class="hint" style="margin-bottom:10px">重點是「能開啟這個網頁」一次，以便按儲存、複製書籤。可擇一：</p>
+    <ul style="margin:0;padding-left:1.2em;line-height:1.55;font-size:13px;color:#333">
+      <li><strong>LINE／郵件</strong>：把 <code>index.html</code> 當附件傳給自己，在訊息裡<strong>點附件</strong>，選<strong>用 Safari 開啟</strong>或<strong>預覽</strong>後用分享開瀏覽器（依畫面為準）。</li>
+      <li><strong>iCloud 雲碟／Google 雲端硬碟 App</strong>：把檔案放雲端，手機用 App 點開（若可選瀏覽器請選 Safari）。</li>
+      <li><strong>免費網頁空間</strong>（一次設定）：把 <code>index.html</code> 上傳到 GitHub Pages、Netlify 等，之後手機只要記住<strong>一個 https 網址</strong>即可開啟，最省事。</li>
+    </ul>
+    <p class="hint" style="margin:12px 0 0">若在家且手邊有電腦，也可用資料夾內 <code>開啟網頁伺服器.bat</code> 用區網網址開本頁（選用）。</p>
+  </section>
+
+  <section>
+    <h2>台北表單資料</h2>
+    <label><span>Email *</span><input type="email" id="t-email" placeholder="your@email.com" value="weitinguaver@gmail.com"></label>
+    <label><span>活動申請編號 <span class="optional">選填</span></span><input type="text" id="t-activityId" placeholder="例 AB22********"></label>
+    <label><span>法人名稱（全名）*</span><input type="text" id="t-legalName" placeholder="請填寫全名" value="鈊捷儀器有限公司"></label>
+    <label><span>申請人資訊（姓名、電話）*</span><input type="text" id="t-applicantInfo" placeholder="姓名、電話" value="陳韋廷、0937565491"></label>
+    <label><span>作業日期 <span class="optional">選填</span></span><input type="date" id="t-workDate"></label>
+    <label><span>第二頁 — 實際進駐協調人員姓名 *</span>
+      <select id="t-coordinatorPreset" aria-label="實際進駐協調人員姓名">
+        <option value="1" selected>簡勇坤（預設）</option>
+        <option value="2">張博硯</option>
+        <option value="3">葉宗瀚</option>
+      </select>
+    </label>
+    <input type="hidden" id="t-coordinatorName" value="簡勇坤">
+    <label><span>身份證字號 *</span><input type="text" id="t-idNumber" placeholder="身分證字號" maxlength="10" value="H121070028"></label>
+    <label><span>車號 <span class="optional">選填</span></span><input type="text" id="t-vehicleNumber" placeholder="車號或機車前加「機」" value="BEQ-8906"></label>
+    <label><span>聯絡電話 *</span><input type="tel" id="t-contactPhone" placeholder="當日聯絡電話" value="0912218136"></label>
+    <div class="row"><input type="checkbox" id="t-checkDeclaration" checked><span>聲明暨切結書（必要）</span></div>
+    <div class="row"><input type="checkbox" id="t-checkCompanySeal" checked><span>需蓋公司大小章</span></div>
+  </section>
+
+  <section>
+    <h2>高雄表單資料</h2>
+    <label><span>Email *</span><input type="email" id="k-email" placeholder="your@email.com" value="weitinguaver@gmail.com"></label>
+    <label><span>活動申請編號 <span class="optional">選填</span></span><input type="text" id="k-activityId"></label>
+    <label><span>法人名稱（全名）*</span><input type="text" id="k-legalName" value="鈊捷儀器有限公司"></label>
+    <label><span>申請人姓名 *</span><input type="text" id="k-applicantName" placeholder="例 王大明" value="陳韋廷"></label>
+    <label><span>申請人手機 *</span><input type="tel" id="k-applicantPhone" placeholder="0988-123-456" value="0937-565-491"></label>
+    <label><span>實際作業日期 <span class="optional">選填</span></span><input type="date" id="k-workDate"></label>
+    <label><span>第二頁 — 協調人員姓名 *</span><input type="text" id="k-coordinatorName" value="郭建德"></label>
+    <label><span>身份證字號 *</span><input type="text" id="k-idNumber" maxlength="10" value="I100008894"></label>
+    <label><span>出生年月日 *</span><input type="date" id="k-birthDate" value="1984-09-18"></label>
+    <label><span>聯絡電話 *</span><input type="tel" id="k-contactPhone" value="0925806388"></label>
+    <label><span>電子郵件（第二頁）</span><input type="email" id="k-email2" placeholder="留空則用第一頁" value="weitinguaver@gmail.com"></label>
+    <label><span>是否與原計畫書協調人同一人</span><select id="k-samePerson"><option value="是">是</option><option value="否" selected>否</option></select></label>
+    <label><span>實際作業起迄時間 *</span><input type="text" id="k-operationTime" placeholder="例 1800-2100" value="0530-1700"></label>
+    <label><span>預計進駐抵達時間</span><select id="k-arrivalTime"><option value="0900">0900</option><option value="1100">1100</option><option value="1400">1400</option><option value="1600">1600</option><option value="其他" selected>其他</option></select></label>
+    <label><span>選「其他」時填寫時間</span><input type="text" id="k-arrivalTimeOther" placeholder="例 0630" value="0500"></label>
+    <div class="row"><input type="checkbox" id="k-checkDeclaration" checked><span>聲明書紙本正本</span></div>
+    <div class="row"><input type="checkbox" id="k-checkAffidavit" checked><span>切結書紙本正本</span></div>
+  </section>
+
+  <button class="btn primary" id="saveBtn">儲存到此裝置</button>
+  <p id="saveStatus" style="margin-top:8px;font-size:13px"></p>
+
+  <section class="bookmarklet-box">
+    <h3>加入「自動填入」書籤（Safari）</h3>
+    <p>1. 先按上方<strong>儲存到此裝置</strong>，再點下方<strong>複製書籤網址</strong>（書籤內已含台北+高雄資料，<strong>不需開電腦</strong>也能在表單頁填入）。<br>2. Safari → 書籤 → 編輯 → 新增書籤 → 名稱填「自動填入」，網址<strong>貼上</strong>後儲存。<br>3. 到<strong>台北或高雄表單</strong>（第幾頁就開第幾頁），點書籤「自動填入」。</p>
+    <p style="font-size:12px;color:#666">若 Safari 提示書籤過長，請刪減備註欄位後再複製，或改用電腦擴充。</p>
+    <button class="btn secondary" id="copyBtn">複製書籤網址（內含資料）</button>
+    <p id="copyStatus" style="margin-top:8px;font-size:13px"></p>
+  </section>
+
+  <script type="text/plain" id="fillRunnerEmbedded">
+    var T='1FAIpQLSePkWC-1vqYLolnjaMzUSTrn6s9eYzZfWZViBRshKgwCck5BQ',K='1FAIpQLSffFyVuG8XsfyodQyKoWQlL9kSgWRrn1tWMxQKBMSl4tgPoMQ';
+    var u=location.href,form=u.indexOf(T)>=0?'taipei':u.indexOf(K)>=0?'kaohsiung':null;
+    if(!form){alert('請在台北或高雄表單頁面使用此書籤');return;}
+    var txt=document.body.innerText||'', page=txt.indexOf('實際進駐協調人員')>=0||txt.indexOf('身份證字號')>=0?2:1;
+    var data=form==='taipei'?dataTaipei:dataKaohsiung;
+    if(!data||!data.email){alert('請回設定頁重新按「複製書籤網址」');return;}
+    function q(el){var r=el.closest('[data-params]')||el.closest('[role="listitem"]')||el.closest('div[class*="Question"]')||el.closest('form')||document.body;return (r.innerText||'').slice(0,350);}
+    function m(t,map){var s=(t||'').toLowerCase();for(var i=0;i<map.length;i++){var k=map[i].k,f=map[i].f;for(var j=0;j<k.length;j++)if(s.indexOf(k[j].toLowerCase())>=0)return f;}return null;}
+    var maps={taipei1:[{k:['Email','email','電子郵件'],f:'email'},{k:['活動申請編號'],f:'activityId'},{k:['法人名稱'],f:'legalName'},{k:['申請人資訊','姓名','電話'],f:'applicantInfo'},{k:['作業日期'],f:'workDate'}],taipei2:[{k:['實際進駐協調人員','協調人員'],f:'coordinatorName'},{k:['身份證字號'],f:'idNumber'},{k:['車號'],f:'vehicleNumber'},{k:['聯絡電話'],f:'contactPhone'},{k:['電子郵件','Email'],f:'email'}],kaohsiung1:[{k:['Email','電子郵件'],f:'email'},{k:['活動申請編號'],f:'activityId'},{k:['法人名稱'],f:'legalName'},{k:['填表之申請人','姓名'],f:'applicantName'},{k:['填表之申請人','手機'],f:'applicantPhone'},{k:['實際作業日期'],f:'workDate'}],kaohsiung2:[{k:['實際進駐協調人員'],f:'coordinatorName'},{k:['身份證字號'],f:'idNumber'},{k:['聯絡電話'],f:'contactPhone'},{k:['電子郵件'],f:'email2'},{k:['實際作業起','迄時間'],f:'operationTime'}]};
+    var key=form+page, map=maps[key];
+    if(!map){alert('無法辨識目前頁面');return;}
+    var filled={};
+    var inputs=document.querySelectorAll('input[type="text"],input[type="email"],input[type="date"],input[type="tel"],textarea');
+    var emailVal=(data.email2&&data.email2.trim())?data.email2.trim():(data.email||'').trim();
+    inputs.forEach(function(inp){
+      var f=m(q(inp),map);
+      var v=f==='email2'?emailVal:(data[f]||'');
+      if(f&&v&&!filled[f]){inp.value=v;inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));filled[f]=true;}
+    });
+    if(form==='taipei'&&page===1){var ord=['email','activityId','legalName','applicantInfo'];var sa=Array.from(document.querySelectorAll('input[type="text"],input[type="email"]')).filter(function(i){return (i.type||'').toLowerCase()==='text'||(i.type||'').toLowerCase()==='email';});ord.forEach(function(f,i){if(!filled[f]&&data[f]&&sa[i]){sa[i].value=data[f];sa[i].dispatchEvent(new Event('input',{bubbles:true}));filled[f]=true;}});var dt=document.querySelectorAll('input[type="date"]');if(data.workDate&&dt[0]&&!filled.workDate){dt[0].value=data.workDate;dt[0].dispatchEvent(new Event('input',{bubbles:true}));}}
+    if(form==='kaohsiung'&&page===1){var ord=['email','activityId','legalName','applicantName','applicantPhone'];var sa=Array.from(document.querySelectorAll('input[type="text"],input[type="email"]')).filter(function(i){return (i.type||'').toLowerCase()==='text'||(i.type||'').toLowerCase()==='email';});ord.forEach(function(f,i){if(!filled[f]&&data[f]&&sa[i]){sa[i].value=data[f];sa[i].dispatchEvent(new Event('input',{bubbles:true}));filled[f]=1;} });var dt=document.querySelectorAll('input[type="date"]');if(data.workDate&&dt[0]){dt[0].value=data.workDate;dt[0].dispatchEvent(new Event('input',{bubbles:true}));}}
+    if(form==='kaohsiung'&&page===2){var dt=document.querySelectorAll('input[type="date"]');for(var i=0;i<dt.length;i++){if(q(dt[i]).indexOf('出生')>=0&&data.birthDate){dt[i].value=data.birthDate;dt[i].dispatchEvent(new Event('input',{bubbles:true}));break;}}}
+    var cbs=document.querySelectorAll('input[type="checkbox"],[role="checkbox"]');
+    cbs.forEach(function(cb){var r=cb.closest('[role="listitem"]')||cb.parentElement;var t=(r?r.innerText:'')+(cb.getAttribute('aria-label')||'');if(t.indexOf('聲明暨切結書')>=0&&t.indexOf('必要')>=0&&data.checkDeclaration!==false&&!cb.checked){cb.click();}else if(t.indexOf('需蓋有公司大小章')>=0&&data.checkCompanySeal===true&&!cb.checked){cb.click();}else if(t.indexOf('聲明書')>=0&&t.indexOf('紙本正本')>=0&&data.checkDeclaration!==false&&!cb.checked){cb.click();}else if(t.indexOf('切結書')>=0&&t.indexOf('紙本正本')>=0&&data.checkAffidavit!==false&&!cb.checked){cb.click();}});
+    if(form==='kaohsiung'&&page===2&&data.arrivalTime==='其他'&&data.arrivalTimeOther){var rad=document.querySelectorAll('input[type="radio"],[role="radio"]');for(var i=0;i<rad.length;i++){var r=rad[i].closest('[role="listitem"]')||rad[i].parentElement;if(r&&r.innerText.indexOf('預計進駐抵達')>=0){var lb=(rad[i].nextElementSibling&&rad[i].nextElementSibling.innerText)||'';if(lb.indexOf('其他')>=0){rad[i].click();var tx=r.querySelector('input[type="text"]');if(tx){tx.value=data.arrivalTimeOther;tx.dispatchEvent(new Event('input',{bubbles:true}));}break;}}}}
+    alert('已填入目前頁面');
+  </script>
+  <script>
+    (function(){
+      var TAIPEI_COORD_PRESETS={
+        '1':{coordinatorName:'簡勇坤',idNumber:'H121070028',vehicleNumber:'BEQ-8906',contactPhone:'0912218136'},
+        '2':{coordinatorName:'張博硯',idNumber:'G122508280',vehicleNumber:'EBJ-9105',contactPhone:'0903573692'},
+        '3':{coordinatorName:'葉宗瀚',idNumber:'H123841052',vehicleNumber:'EBJ-5738',contactPhone:'0989702210'}
+      };
+      function inferTaipeiPreset(d){
+        if(d&&d.coordinatorPreset&&TAIPEI_COORD_PRESETS[d.coordinatorPreset])return d.coordinatorPreset;
+        var n=(d&&d.coordinatorName||'').replace(/\s/g,'');
+        if(n==='張博硯')return '2';
+        if(n==='葉宗瀚')return '3';
+        return '1';
+      }
+      function applyTaipeiCoordinatorPreset(key){
+        var p=TAIPEI_COORD_PRESETS[key];
+        if(!p)return;
+        document.getElementById('t-coordinatorName').value=p.coordinatorName;
+        document.getElementById('t-idNumber').value=p.idNumber;
+        document.getElementById('t-vehicleNumber').value=p.vehicleNumber;
+        document.getElementById('t-contactPhone').value=p.contactPhone;
+      }
+      var taipeiIds=['email','activityId','legalName','applicantInfo','workDate','coordinatorName','idNumber','vehicleNumber','contactPhone','coordinatorPreset'];
+      var taipeiCk=['checkDeclaration','checkCompanySeal'];
+      var kaohsiungIds=['email','activityId','legalName','applicantName','applicantPhone','workDate','coordinatorName','idNumber','birthDate','contactPhone','email2','samePerson','operationTime','arrivalTime','arrivalTimeOther'];
+      var kaohsiungCk=['checkDeclaration','checkAffidavit'];
+      function getTaipei(){
+        var d={};
+        taipeiIds.forEach(function(id){
+          if(id==='coordinatorPreset')return;
+          var e=document.getElementById('t-'+id);if(e)d[id]=e.value.trim();
+        });
+        var sp=document.getElementById('t-coordinatorPreset');if(sp)d.coordinatorPreset=sp.value;
+        taipeiCk.forEach(function(id){var e=document.getElementById('t-'+id);if(e&&e.type==='checkbox')d[id]=e.checked;});
+        return d;
+      }
+      function setTaipei(d){
+        taipeiIds.forEach(function(id){
+          if(id==='coordinatorPreset')return;
+          var e=document.getElementById('t-'+id);if(e&&d[id]!==undefined)e.value=d[id];
+        });
+        var sp=document.getElementById('t-coordinatorPreset');
+        if(sp&&d)sp.value=inferTaipeiPreset(d);
+        taipeiCk.forEach(function(id){var e=document.getElementById('t-'+id);if(e&&e.type==='checkbox'&&d[id]!==undefined)e.checked=!!d[id];});
+      }
+      function getKaohsiung(){
+        var d={};
+        kaohsiungIds.forEach(function(id){var e=document.getElementById('k-'+id);if(e)d[id]=e.value.trim();});
+        kaohsiungCk.forEach(function(id){var e=document.getElementById('k-'+id);if(e&&e.type==='checkbox')d[id]=e.checked;});
+        return d;
+      }
+      function setKaohsiung(d){
+        kaohsiungIds.forEach(function(id){var e=document.getElementById('k-'+id);if(e&&d[id]!==undefined)e.value=d[id];});
+        kaohsiungCk.forEach(function(id){var e=document.getElementById('k-'+id);if(e&&e.type==='checkbox'&&d[id]!==undefined)e.checked=!!d[id];});
+      }
+      document.getElementById('saveBtn').onclick=function(){
+        try {
+          localStorage.setItem('autofillDataTaipei',JSON.stringify(getTaipei()));
+          localStorage.setItem('autofillDataKaohsiung',JSON.stringify(getKaohsiung()));
+          var st=document.getElementById('saveStatus');
+          st.textContent='已儲存到此裝置';
+          st.className='ok';
+        }catch(e){document.getElementById('saveStatus').textContent='儲存失敗';}
+      };
+      document.getElementById('t-coordinatorPreset').addEventListener('change',function(){
+        applyTaipeiCoordinatorPreset(this.value);
+      });
+      try {
+        var t=localStorage.getItem('autofillDataTaipei');
+        if(t)setTaipei(JSON.parse(t));
+        else applyTaipeiCoordinatorPreset('1');
+        var k=localStorage.getItem('autofillDataKaohsiung');if(k)setKaohsiung(JSON.parse(k));
+      }catch(_){}
+      function buildPortableBookmarkUrl(){
+        var pack={t:getTaipei(),k:getKaohsiung()};
+        var b64=btoa(unescape(encodeURIComponent(JSON.stringify(pack))));
+        var runner=document.getElementById('fillRunnerEmbedded').textContent.replace(/^\s+|\s+$/g,'');
+        var head='(function(){try{var P='+JSON.stringify(b64)+';var B=JSON.parse(decodeURIComponent(escape(atob(P))));var dataTaipei=B.t,dataKaohsiung=B.k;';
+        var tail='}catch(e){alert("填入失敗："+e.message);}})();';
+        return 'javascript:'+head+runner+tail;
+      }
+      document.getElementById('copyBtn').onclick=function(){
+        try{
+          localStorage.setItem('autofillDataTaipei',JSON.stringify(getTaipei()));
+          localStorage.setItem('autofillDataKaohsiung',JSON.stringify(getKaohsiung()));
+        }catch(_){}
+        var url=buildPortableBookmarkUrl();
+        var st=document.getElementById('copyStatus');
+        var n=url.length;
+        var warn=n>8000?'（長度 '+n+'，若 Safari 無法存書籤請刪減備註欄後再複製）':'';
+        function done(){st.textContent='已複製！請到 Safari 新增書籤並貼上網址'+warn;st.className='ok';}
+        if(navigator.clipboard&&navigator.clipboard.writeText){
+          navigator.clipboard.writeText(url).then(done);
+        }else{
+          var ta=document.createElement('textarea');ta.value=url;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);done();
+        }
+      };
+    })();
+  </script>
+</body>
+</html>
