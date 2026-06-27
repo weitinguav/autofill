@@ -103,6 +103,12 @@
     <p style="font-size:13px;line-height:1.55;margin:8px 0 0"><strong>Safari：</strong>書籤圖示 → 編輯 → 新增書籤 → 名稱「自動填入」→ 網址<strong>長按貼上</strong> → 儲存。</p>
     <p style="font-size:13px;line-height:1.55;margin:6px 0 0"><strong>Chrome（iPhone App）：</strong>右下角<strong>⋯</strong> → <strong>書籤</strong> → 畫面上找<strong>新增／+</strong>或先進「行動書籤」→ 新增時名稱填「自動填入」，網址<strong>貼上</strong>（介面依版本略有不同；若找不到新增，可先隨便書籤一頁，在書籤列表裡對該書籤<strong>編輯</strong>，把網址改成貼上的內容）。填表時請用<strong>Chrome 開 Google 表單</strong>再點書籤，不要用 Safari 存的書籤去開 Chrome 分頁。</p>
     <p style="font-size:12px;color:#666;margin-top:8px">iPhone 上的 Chrome 與 Safari 一樣都是 Apple 提供的網頁核心，書籤小程式通常兩邊都能用。若瀏覽器不讓你在網址列直接貼上 <code>javascript:</code> 開頭的網址，屬正常，請務必用「書籤」方式執行。若提示書籤過長，請刪減選填欄後再複製。</p>
+    <div style="background:#fde8e8;border:1px solid #f5c2c2;border-radius:8px;padding:10px 12px;margin-top:12px;font-size:13px;line-height:1.55;color:#5c1010">
+      <strong>為什麼一點書籤就回到這個 index 設定頁？</strong><br>
+      幾乎都是因為書籤存錯了：若你按「新增書籤」時<strong>人還停在這個設定頁</strong>，Safari／Chrome 會把書籤網址存成 <code>index.html</code> 或 <code>file://…</code>，點下去當然會跳回這裡。<br>
+      <strong>正確做法：</strong>先按下面<strong>複製書籤網址</strong>，新增書籤時必須把「網址」欄<strong>清空</strong>，再<strong>貼上</strong>複製內容；貼上後開頭一定要是 <code>javascript:(function(){try{var P="</code>…（很長一串），<strong>不是</strong> <code>http</code>、也不是 <code>file</code>。<br>
+      若已存錯：到書籤 → 找到「自動填入」→ <strong>編輯</strong> → 把網址整段改成重新複製貼上。
+    </div>
     <button class="btn secondary" id="copyBtn">複製書籤網址（內含資料）</button>
     <p id="copyStatus" style="margin-top:8px;font-size:13px"></p>
   </section>
@@ -115,8 +121,9 @@
     var data=form==='taipei'?dataTaipei:dataKaohsiung;
     if(!data||!data.email){alert('請回設定頁重新按「複製書籤網址」');return;}
     function q(el){var r=el.closest('[data-params]')||el.closest('[role="listitem"]')||el.closest('div[class*="Question"]')||el.closest('form')||document.body;return (r.innerText||'').slice(0,350);}
-    function m(t,map){var s=(t||'').toLowerCase();for(var i=0;i<map.length;i++){var k=map[i].k,f=map[i].f;for(var j=0;j<k.length;j++)if(s.indexOf(k[j].toLowerCase())>=0)return f;}return null;}
-    var maps={taipei1:[{k:['Email','email','電子郵件'],f:'email'},{k:['活動申請編號'],f:'activityId'},{k:['法人名稱'],f:'legalName'},{k:['申請人資訊','姓名','電話'],f:'applicantInfo'},{k:['作業日期'],f:'workDate'}],taipei2:[{k:['實際進駐協調人員','協調人員'],f:'coordinatorName'},{k:['身份證字號'],f:'idNumber'},{k:['車號'],f:'vehicleNumber'},{k:['聯絡電話'],f:'contactPhone'},{k:['電子郵件','Email'],f:'email'}],kaohsiung1:[{k:['Email','電子郵件'],f:'email'},{k:['活動申請編號'],f:'activityId'},{k:['法人名稱'],f:'legalName'},{k:['填表之申請人','姓名'],f:'applicantName'},{k:['填表之申請人','手機'],f:'applicantPhone'},{k:['實際作業日期'],f:'workDate'}],kaohsiung2:[{k:['實際進駐協調人員'],f:'coordinatorName'},{k:['身份證字號'],f:'idNumber'},{k:['聯絡電話'],f:'contactPhone'},{k:['電子郵件'],f:'email2'},{k:['實際作業起','迄時間'],f:'operationTime'}]};
+    function m(t,map){var s=(t||'').toLowerCase();for(var i=0;i<map.length;i++){var k=map[i].k,f=map[i].f;var ok=true;for(var j=0;j<k.length;j++)if(s.indexOf(k[j].toLowerCase())<0){ok=false;break;}if(ok)return f;}for(var i=0;i<map.length;i++){var k=map[i].k,f=map[i].f;for(var j=0;j<k.length;j++)if(s.indexOf(k[j].toLowerCase())>=0)return f;}return null;}
+    function splitDate(d,kw){if(!d||!kw)return false;var p=String(d).match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);if(!p)return false;var mm=p[2].length<2?'0'+p[2]:p[2],dd=p[3].length<2?'0'+p[3]:p[3],yyyy=p[1],yy=yyyy.slice(-2);var roots=document.querySelectorAll('[role="listitem"],[data-params],div[class*="Question"]');for(var i=0;i<roots.length;i++){var t=roots[i].innerText||'';if(t.indexOf(kw)<0)continue;var ins=roots[i].querySelectorAll('input[type="text"]');if(ins.length>=3){var yv=(ins[2].maxLength===2||ins[2].getAttribute('maxlength')==='2')?yy:yyyy;ins[0].value=mm;ins[0].dispatchEvent(new Event('input',{bubbles:true}));ins[1].value=dd;ins[1].dispatchEvent(new Event('input',{bubbles:true}));ins[2].value=yv;ins[2].dispatchEvent(new Event('input',{bubbles:true}));return true;}}return false;}
+    var maps={taipei1:[{k:['Email','email','電子郵件'],f:'email'},{k:['活動申請編號'],f:'activityId'},{k:['法人名稱'],f:'legalName'},{k:['申請人資訊','姓名','電話'],f:'applicantInfo'},{k:['作業日期'],f:'workDate'}],taipei2:[{k:['實際進駐協調人員','協調人員'],f:'coordinatorName'},{k:['身份證字號'],f:'idNumber'},{k:['車號'],f:'vehicleNumber'},{k:['聯絡電話'],f:'contactPhone'},{k:['電子郵件','Email'],f:'email'}],kaohsiung1:[{k:['Email','電子郵件'],f:'email'},{k:['活動申請編號'],f:'activityId'},{k:['法人名稱'],f:'legalName'},{k:['填表之申請人','姓名'],f:'applicantName'},{k:['申請人','姓名'],f:'applicantName'},{k:['填表之申請人','手機'],f:'applicantPhone'},{k:['申請人','手機'],f:'applicantPhone'},{k:['實際作業日期'],f:'workDate'}],kaohsiung2:[{k:['實際進駐協調人員'],f:'coordinatorName'},{k:['身份證字號'],f:'idNumber'},{k:['聯絡電話'],f:'contactPhone'},{k:['電子郵件'],f:'email2'},{k:['實際作業起','迄時間'],f:'operationTime'}]};
     var key=form+page, map=maps[key];
     if(!map){alert('無法辨識目前頁面');return;}
     var filled={};
@@ -125,11 +132,12 @@
     inputs.forEach(function(inp){
       var f=m(q(inp),map);
       var v=f==='email2'?emailVal:(data[f]||'');
+      if(f&&(f==='workDate'||f==='birthDate'))return;
       if(f&&v&&!filled[f]){inp.value=v;inp.dispatchEvent(new Event('input',{bubbles:true}));inp.dispatchEvent(new Event('change',{bubbles:true}));filled[f]=true;}
     });
     if(form==='taipei'&&page===1){var ord=['email','activityId','legalName','applicantInfo'];var sa=Array.from(document.querySelectorAll('input[type="text"],input[type="email"]')).filter(function(i){return (i.type||'').toLowerCase()==='text'||(i.type||'').toLowerCase()==='email';});ord.forEach(function(f,i){if(!filled[f]&&data[f]&&sa[i]){sa[i].value=data[f];sa[i].dispatchEvent(new Event('input',{bubbles:true}));filled[f]=true;}});var dt=document.querySelectorAll('input[type="date"]');if(data.workDate&&dt[0]&&!filled.workDate){dt[0].value=data.workDate;dt[0].dispatchEvent(new Event('input',{bubbles:true}));}}
-    if(form==='kaohsiung'&&page===1){var ord=['email','activityId','legalName','applicantName','applicantPhone'];var sa=Array.from(document.querySelectorAll('input[type="text"],input[type="email"]')).filter(function(i){return (i.type||'').toLowerCase()==='text'||(i.type||'').toLowerCase()==='email';});ord.forEach(function(f,i){if(!filled[f]&&data[f]&&sa[i]){sa[i].value=data[f];sa[i].dispatchEvent(new Event('input',{bubbles:true}));filled[f]=1;} });var dt=document.querySelectorAll('input[type="date"]');if(data.workDate&&dt[0]){dt[0].value=data.workDate;dt[0].dispatchEvent(new Event('input',{bubbles:true}));}}
-    if(form==='kaohsiung'&&page===2){var dt=document.querySelectorAll('input[type="date"]');for(var i=0;i<dt.length;i++){if(q(dt[i]).indexOf('出生')>=0&&data.birthDate){dt[i].value=data.birthDate;dt[i].dispatchEvent(new Event('input',{bubbles:true}));break;}}}
+    if(form==='kaohsiung'&&page===1){var ord=['email','activityId','legalName','applicantName','applicantPhone'];var sa=Array.from(document.querySelectorAll('input[type="text"],input[type="email"],input[type="tel"]')).filter(function(i){var ty=(i.type||'').toLowerCase();return ty==='text'||ty==='email'||ty==='tel';});ord.forEach(function(f,i){if(!filled[f]&&data[f]&&sa[i]){sa[i].value=data[f];sa[i].dispatchEvent(new Event('input',{bubbles:true}));filled[f]=1;} });if(data.workDate&&!filled.workDate)splitDate(data.workDate,'實際作業日期');}
+    if(form==='kaohsiung'&&page===2){if(data.birthDate)splitDate(data.birthDate,'出生');}
     var cbs=document.querySelectorAll('input[type="checkbox"],[role="checkbox"]');
     cbs.forEach(function(cb){var r=cb.closest('[role="listitem"]')||cb.parentElement;var t=(r?r.innerText:'')+(cb.getAttribute('aria-label')||'');if(t.indexOf('聲明暨切結書')>=0&&t.indexOf('必要')>=0&&data.checkDeclaration!==false&&!cb.checked){cb.click();}else if(t.indexOf('需蓋有公司大小章')>=0&&data.checkCompanySeal===true&&!cb.checked){cb.click();}else if(t.indexOf('聲明書')>=0&&t.indexOf('紙本正本')>=0&&data.checkDeclaration!==false&&!cb.checked){cb.click();}else if(t.indexOf('切結書')>=0&&t.indexOf('紙本正本')>=0&&data.checkAffidavit!==false&&!cb.checked){cb.click();}});
     if(form==='kaohsiung'&&page===2&&data.arrivalTime==='其他'&&data.arrivalTimeOther){var rad=document.querySelectorAll('input[type="radio"],[role="radio"]');for(var i=0;i<rad.length;i++){var r=rad[i].closest('[role="listitem"]')||rad[i].parentElement;if(r&&r.innerText.indexOf('預計進駐抵達')>=0){var lb=(rad[i].nextElementSibling&&rad[i].nextElementSibling.innerText)||'';if(lb.indexOf('其他')>=0){rad[i].click();var tx=r.querySelector('input[type="text"]');if(tx){tx.value=data.arrivalTimeOther;tx.dispatchEvent(new Event('input',{bubbles:true}));}break;}}}}
@@ -225,7 +233,11 @@
         var st=document.getElementById('copyStatus');
         var n=url.length;
         var warn=n>8000?'（長度 '+n+'，若 Safari 無法存書籤請刪減備註欄後再複製）':'';
-        function done(){st.textContent='已複製！請到 Safari 或 Chrome 新增書籤並貼上網址（填表時用同一瀏覽器）'+warn;st.className='ok';}
+        function done(){
+          var ok=url.indexOf('javascript:')===0;
+          st.textContent=(ok?'已複製！請新增書籤時「網址」務必貼上此內容（開頭為 javascript:），勿存成 index 網址。':'複製異常：開頭應為 javascript:，請重試。')+' '+warn;
+          st.className=ok?'ok':'';
+        }
         if(navigator.clipboard&&navigator.clipboard.writeText){
           navigator.clipboard.writeText(url).then(done);
         }else{
